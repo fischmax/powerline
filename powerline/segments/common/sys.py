@@ -89,8 +89,8 @@ try:
 				except Exception as e:
 					self.exception('Exception while calculating cpu_percent: {0}', str(e))
 
-		def render(self, cpu_percent, format='{0:.0f}%', **kwargs):
-			if not cpu_percent:
+		def render(self, cpu_percent, format='{0:.0f}%', always_show=False, **kwargs):
+			if not cpu_percent and not always_show:
 				return None
 			return [{
 				'contents': format.format(cpu_percent),
@@ -126,6 +126,9 @@ Requires the ``psutil`` module.
 
 :param str format:
 	Output format. Accepts measured CPU load as the first argument.
+
+:param bool always_show:
+	Show the CPU load even if it is zero.
 
 Highlight groups used: ``cpu_load_percent_gradient`` (gradient) or ``cpu_load_percent``.
 ''')
