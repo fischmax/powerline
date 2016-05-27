@@ -37,17 +37,17 @@ class EmailIMAPSegment(KwThreadedSegment):
 		return unread_count
 
 	@staticmethod
-	def render_one(unread_count, max_msgs=None, highlight_group='email_alert', highlight_group_gradient='email_alert_gradient', **kwargs):
+	def render_one(unread_count, max_msgs=None, highlight_group='email_alert', highlight_group_gradient='email_alert_gradient', before=None, **kwargs):
 		if not unread_count:
 			return None
 		elif type(unread_count) != int or not max_msgs:
 			return [{
-				'contents': str(unread_count),
+				'contents': before + str(unread_count),
 				'highlight_groups': [highlight_group],
 			}]
 		else:
 			return [{
-				'contents': str(unread_count),
+				'contents': before + str(unread_count),
 				'highlight_groups': [highlight_group_gradient_, highlight_group],
 				'gradient_level': min(unread_count * 100.0 / max_msgs, 100),
 			}]
@@ -80,6 +80,9 @@ email_imap_alert = with_docstring(EmailIMAPSegment(),
 :param str highlight_group_gradient_:
 	Highlight group to use for gradient, i.e. when ``max_msgs`` is given. If
 	not present, ``email_alert_gradient`` will be used.
+:param str before:
+	Text to display in front of the mail count (TODO: replace this with a
+	format string)
 
 Highlight groups used: ``email_alert_gradient`` (gradient), ``email_alert`` or
 	the given ones.
